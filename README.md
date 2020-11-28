@@ -15,8 +15,11 @@ Golang轻量级TCP服务器框架
 
 
 ### 目录结构
+```
 .
-├── abstract
-└── entity
+├── abstract    // 抽象层
+└── entity  // 实体层
+```
 
-2 directories
+
+
