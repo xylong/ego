@@ -2,8 +2,8 @@ package abstract
 
 import "net"
 
-// Connection 连接
-type Connection interface {
+// Connect 连接
+type Connect interface {
 	// 启动连接
 	Start()
 	// 停止连接
