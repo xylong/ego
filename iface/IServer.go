@@ -1,7 +1,7 @@
-package abstract
+package iface
 
-// Service 服务
-type Service interface {
+// IServer 服务接口
+type IServer interface {
 	// Start 启动服务
 	Start()
 	// Stop 停止服务

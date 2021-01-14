@@ -1,4 +1,4 @@
-package abstract
+package iface
 
 import "net"
 
@@ -19,4 +19,4 @@ type Connect interface {
 }
 
 // HandleFunc 处理连接业务函数
-type HandleFunc func(*net.TCPConn,[]byte,int) error
+type HandleFunc func(*net.TCPConn, []byte, int) error
