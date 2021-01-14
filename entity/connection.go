@@ -7,6 +7,7 @@ import (
 	"net"
 )
 
+// Connection 连接
 type Connection struct {
 	// 当前连接的socket
 	Conn *net.TCPConn
@@ -21,11 +22,11 @@ type Connection struct {
 }
 
 // NewConnection 创建连接
-func NewConnection(conn *net.TCPConn, connID uint32, handleAPI iface.HandleFunc) *Connection {
+func NewConnection(conn *net.TCPConn, connID uint32, callback iface.HandleFunc) *Connection {
 	return &Connection{
 		Conn:      conn,
 		ConnID:    connID,
-		handleAPI: handleAPI,
+		handleAPI: callback,
 		isClosed:  false,
 		ExitChan:  make(chan bool, 1),
 	}
@@ -33,6 +34,7 @@ func NewConnection(conn *net.TCPConn, connID uint32, handleAPI iface.HandleFunc)
 
 // Start 启动连接
 func (c *Connection) Start() {
+	fmt.Printf("conn:%d start", c.ConnID)
 	go c.StartReader()
 }
 
@@ -47,7 +49,7 @@ func (c *Connection) StartReader() {
 		buf := make([]byte, 512)
 		length, err := c.Conn.Read(buf)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 			continue
 		}
 
@@ -61,6 +63,8 @@ func (c *Connection) StartReader() {
 
 // Stop 停止连接
 func (c *Connection) Stop() {
+	fmt.Printf("conn:%d stop", c.ConnID)
+
 	if c.isClosed {
 		return
 	}

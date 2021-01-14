@@ -47,27 +47,19 @@ func (s *Server) Start() {
 		}
 		fmt.Println("start server ego successful...")
 		// 3.阻塞等待客户端连接，处理业务
+		var connID uint32
+		connID = 0
 		for {
 			conn, err := listener.AcceptTCP()
 			if err != nil {
 				fmt.Printf("Accept error:%s\n", err.Error())
 				continue
 			}
-			// 回显
-			go func() {
-				for {
-					buf := make([]byte, 512)
-					length, err := conn.Read(buf)
-					if err != nil {
-						fmt.Printf("receive buf error:%s\n", err.Error())
-						continue
-					}
-					if _, err := conn.Write(buf[:length]); err != nil {
-						fmt.Printf("write back buf error:%s\n", err.Error())
-						continue
-					}
-				}
-			}()
+
+			// 调用连接处理逻辑
+			connection := NewConnection(conn, connID, Answer)
+			go connection.Start()
+			connID++
 		}
 	}()
 }
@@ -83,4 +75,10 @@ func (s Server) Run() {
 
 	// 阻塞
 	select {}
+}
+
+// Answer 回复
+func Answer(conn *net.TCPConn, bytes []byte, length int) error {
+	_, err := conn.Write(bytes[:length])
+	return err
 }

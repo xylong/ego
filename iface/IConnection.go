@@ -2,8 +2,8 @@ package iface
 
 import "net"
 
-// Connect 连接
-type Connect interface {
+// IConnection 连接接口
+type IConnection interface {
 	// 启动连接
 	Start()
 	// 停止连接
@@ -19,4 +19,7 @@ type Connect interface {
 }
 
 // HandleFunc 处理连接业务函数
+// *net.TCPConn 对端连接
+// []byte 数据
+// int	数据长度
 type HandleFunc func(*net.TCPConn, []byte, int) error
