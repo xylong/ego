@@ -2,6 +2,7 @@ package entity
 
 import (
 	"ego/iface"
+	"ego/util"
 	"fmt"
 	"net"
 )
@@ -23,10 +24,10 @@ type Server struct {
 // NewServer 创建server
 func NewServer(name string) iface.IServer {
 	return &Server{
-		Name:      name,
+		Name:      util.Configure.Name,
 		IPVersion: "tcp4",
-		IP:        "0.0.0.0",
-		Port:      10000,
+		IP:        util.Configure.Host,
+		Port:      util.Configure.Port,
 		Router:    nil,
 	}
 }
