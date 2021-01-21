@@ -16,6 +16,8 @@ type Server struct {
 	IP string
 	// Port 监听端口
 	Port int
+	// 路由
+	Router iface.IRouter
 }
 
 // NewServer 创建server
@@ -25,6 +27,7 @@ func NewServer(name string) iface.IServer {
 		IPVersion: "tcp4",
 		IP:        "0.0.0.0",
 		Port:      10000,
+		Router:    nil,
 	}
 }
 
@@ -57,7 +60,7 @@ func (s *Server) Start() {
 			}
 
 			// 调用连接处理逻辑
-			connection := NewConnection(conn, connID, Answer)
+			connection := NewConnection(conn, connID, s.Router)
 			go connection.Start()
 			connID++
 		}
@@ -70,11 +73,16 @@ func (s *Server) Stop() {
 }
 
 // Run 运行
-func (s Server) Run() {
+func (s *Server) Run() {
 	s.Start()
 
 	// 阻塞
 	select {}
+}
+
+// AddRouter 添加路由
+func (s *Server) AddRouter(router iface.IRouter) {
+	s.Router = router
 }
 
 // Answer 回复
